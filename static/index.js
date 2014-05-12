@@ -58,10 +58,21 @@ var Parallaxer = function ($selector, animationControl) {
     this.animationControl = animationControl;
     this.totalScrollingDistance = 0;
     this.keyToIndexMap   = {};
+
+    this.animationControl.register('adjust-container', $.proxy(this.onResize, this));
+    this.animationControl.register('update-section-visibility', $.proxy(this.onScroll, this));
 };
 
 $.extend(Parallaxer.prototype, {
     scrollingLengthPerSection: 200,
+
+    onResize: function () {
+        this.animationControl.trigger('adjustContainer');
+    },
+
+    onScroll: function () {
+        this.animationControl.trigger('update-section-visibility');
+    },
 
     activate: function () {
         var i = this.numberOfSectors
@@ -170,5 +181,6 @@ $(document).ready(function () {
     var animationControl = new AnimationControl(),
         parallaxer = new Parallaxer($('body > article'), animationControl);
 
+    animationControl.activate();
     parallaxer.activate();
 });
