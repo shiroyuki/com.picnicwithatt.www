@@ -1,0 +1,9 @@
+$defatulAnimationSpeed: 500ms;
+
+@mixin transition($property, $speed) {
+    -webkit-transition: $property ease $speed;
+    -moz-transition: $property ease $speed;
+    -ms-transition: $property ease $speed;
+    -o-transition: $property ease $speed;
+    transition: $property ease $speed;
+}
