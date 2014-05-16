@@ -9,6 +9,7 @@
  */
 var AnimationControl = function (config) {
     this.config = {
+        debug:      false,
         frameRate:  24, // frame per second
         delay:      6   // number of frames
     };
@@ -17,6 +18,16 @@ var AnimationControl = function (config) {
 
     this.config.cycleRate = 1000 / 24;
     this.keyMap           = {};
+
+    if (this.config.debug) {
+        $('body').append([
+            '<div id="sac-debug">',
+                'Delay:      <b>[<span class="delay    "></span>]</b>',
+                'Frame Rate: <b>[<span class="framerate"></span>]</b>',
+                'Key Map:    <b>[<span class="keymap   "></span>]</b>',
+            '</div>'
+        ].join(' '));
+    }
 
     console.log(this.config.cycleRate);
 };
