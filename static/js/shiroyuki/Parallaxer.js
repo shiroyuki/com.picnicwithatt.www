@@ -7,28 +7,44 @@
  * @copyright Juti Noppornpitak
  * @license Common MIT License
  */
-var Parallaxer = function ($selector, animationControl) {
+var Parallaxer = function ($selector, config) {
+    this.config          = config || {}
     this.$window         = $(window);
     this.$container      = $('body');
     this.$sections       = $selector;
+    this.$bookmark       = null;
     this.numberOfSectors = $selector.length;
-    this.animationControl = animationControl;
+    this.animationControl = this.config.animationControl;
     this.totalScrollingDistance = 0;
     this.keyToIndexMap   = {};
 
-    this.animationControl.register('adjust-container', $.proxy(this.onResize, this));
-    this.animationControl.register('update-section-visibility', $.proxy(this.onScroll, this));
+    if (this.config.animationControl) {
+        this.animationControl.register('adjust-container', $.proxy(this.adjustContainer, this));
+        this.animationControl.register('update-section-visibility', $.proxy(this.manageSectionVisibility, this));
+    }
 };
 
 $.extend(Parallaxer.prototype, {
-    scrollingLengthPerSection: 200,
+    scrollingLengthPerSection: 100,
 
     onResize: function () {
-        this.animationControl.trigger('adjustContainer');
+        if (this.config.animationControl) {
+            this.animationControl.trigger('adjust-container');
+
+            return;
+        }
+
+        this.adjustContainer();
     },
 
     onScroll: function () {
-        this.animationControl.trigger('update-section-visibility');
+        if (this.config.animationControl) {
+            this.animationControl.trigger('update-section-visibility');
+
+            return;
+        }
+
+        this.manageSectionVisibility();
     },
 
     activate: function () {
@@ -41,7 +57,7 @@ $.extend(Parallaxer.prototype, {
 
             self.keyToIndexMap[$section.attr('data-key')] = index;
 
-            $section.addClass('parallaxer section');
+            $section.addClass('section');
             $section.css('z-index', i--);
 
             if (index > 0) {
@@ -51,9 +67,9 @@ $.extend(Parallaxer.prototype, {
             $section.addClass('enabled');
         });
 
-        this.$window.on('resize', $.proxy(this.adjustContainer, this));
-        this.$window.on('scroll', $.proxy(this.manageSectionVisibility, this));
-        this.$window.on('touchmove', $.proxy(this.manageSectionVisibility, this));
+        this.$window.on('resize', $.proxy(this.onResize, this));
+        this.$window.on('scroll', $.proxy(this.onScroll, this));
+        this.$window.on('touchmove', $.proxy(this.onScroll, this));
 
         this.adjustContainer();
         this.manageSectionVisibility();
@@ -74,14 +90,17 @@ $.extend(Parallaxer.prototype, {
     setSectionPosition: function ($section, position) {
         var positionToCSSMap = {
             current: {
+                //'opacity':  1,
                 'top':      0,
                 'bottom':   0
             },
             top: {
+                //'opacity':  0,
                 'top':      '-100%',
                 'bottom':   '100%'
             },
             bottom: {
+                //'opacity':  0,
                 'top':      '100%',
                 'bottom':   '-100%'
             }
@@ -91,12 +110,15 @@ $.extend(Parallaxer.prototype, {
     },
 
     manageSectionVisibility: function (event) {
-        var currentPosition = this.getCurrentScrollingPosition(),
+        var self = this,
+            currentPosition = this.getCurrentScrollingPosition(),
             sectionIndex    = Math.floor(currentPosition / this.scrollingLengthPerSection),
             $currentSection,
             $prevSection,
             $nextSection
         ;
+
+        console.log('Parallaxer.manageSectionVisibility');
 
         if (sectionIndex < 0) {
             sectionIndex = 0;
@@ -106,20 +128,24 @@ $.extend(Parallaxer.prototype, {
             sectionIndex = this.numberOfSectors - 1;
         }
 
-        $currentSection = this.$sections.eq(sectionIndex);
-        this.setSectionPosition($currentSection, 'current');
+        this.$sections.each(function (index) {
+            var position = null,
+                $section = $(this);
 
-        window.location.hash = $currentSection.attr('data-key');
+            switch (true) {
+            case index < sectionIndex:
+                position = 'top';
+                break;
+            case index > sectionIndex:
+                position = 'bottom';
+                break;
+            default:
+                window.location.hash = $section.attr('data-key');
+                position = 'current';
+            }
 
-        if ($currentSection.prev()) {
-            $prevSection = $currentSection.prev();
-            this.setSectionPosition($prevSection, 'top');
-        }
-
-        if ($currentSection.next()) {
-            $nextSection = $currentSection.next();
-            this.setSectionPosition($nextSection, 'bottom');
-        }
+            self.setSectionPosition($(this), position);
+        });
     },
 
     adjustContainer: function (event) {

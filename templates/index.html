@@ -7,21 +7,34 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
     <script src="{{ url_for('static', filename='jquery.js') }}"></script>
 </head>
-<body>
+<body class="parallaxer">
     <article data-key="home">
         <h1>Picnic with Att</h1>
     </article>
-    <article data-key="engagement-ceremony">
-        <h1>Engagement Ceremony</h1>
+    <article class="card-section" data-key="engagement-ceremony">
+        <div class="card">
+            <h1>Engagement Ceremony</h1>
+        </div>
     </article>
-    <article data-key="wedding-ceremony">
-        <h1>Wedding Ceremony</h1>
+    <article class="card-section" data-key="wedding-ceremony">
+        <div class="card">
+            <h1>Wedding Ceremony</h1>
+        </div>
     </article>
-    <article data-key="wedding-party">
-        <h1>Wedding Party</h1>
+    <article class="card-section" data-key="wedding-party/afternoon">
+        <div class="card">
+            <h1>Wedding Party (Afternoon Session)</h1>
+        </div>
     </article>
-    <article data-key="about">
-        <h1>Credits</h1>
+    <article class="card-section" data-key="wedding-party/night">
+        <div class="card">
+            <h1>Wedding Party (Night Session)</h1>
+        </div>
+    </article>
+    <article class="card-section" data-key="credits">
+        <div class="card">
+            <h1>Credits</h1>
+        </div>
     </article>
     <script src="{{ url_for('static', filename='js/shiroyuki/AnimationControl.js') }}"></script>
     <script src="{{ url_for('static', filename='js/shiroyuki/Parallaxer.js') }}"></script>
