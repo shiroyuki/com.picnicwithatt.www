@@ -10,8 +10,8 @@
 var AnimationControl = function (config) {
     this.config = {
         debug:      false,
-        frameRate:  60, // frame per second
-        delay:      2    // number of frames
+        frameRate:  60, // frequency: frame per second
+        delay:      2   // default delay length: number of frames
     };
 
     $.extend(this.config, config);
@@ -67,26 +67,35 @@ $.extend(AnimationControl.prototype, {
         rootMap.cr.text(this.config.cycleRate);
 
         $.each(this.keyMap, function (key, meta) {
+            if (meta.alwaysOn) {
+                rootMap.etc[key].text('concurrent');
+
+                return;
+            }
+
             rootMap.etc[key].text(meta.counter);
         });
     },
     activate: function () {
         this.loop = setInterval($.proxy(this.watch, this), this.config.cycleRate);
     },
-    register: function (key, callback) {
+    register: function (key, callback, config) {
         this.keyMap[key] = {
             callback: callback,
-            counter:  0
+            counter:  0,
+            alwaysOn: false
         };
+
+        $.extend(this.keyMap[key], config || {});
 
         if (this.config.debug) {
             this.selectorMap.debug.base.append('<tr class="etc" data-key="' + key + '"><th>' + key + '</th><td></td></tr>');
             this.selectorMap.debug.etc[key] = $('#sac-debug tr.etc[data-key="' + key + '"] td');
         }
     },
-    trigger: function (key) {
+    trigger: function (key, delay) {
         if (this.keyMap[key].counter === 0) {
-            this.keyMap[key].counter = this.config.delay;
+            this.keyMap[key].counter = delay || this.config.delay;
 
             return;
         }
@@ -99,17 +108,26 @@ $.extend(AnimationControl.prototype, {
         $.each(this.keyMap, function (key, meta) {
             var readyForAction = meta.counter === 1;
 
-            if (meta.counter > 0) {
-                meta.counter--;
+            switch (true) {
+            case meta.alwaysOn:
+                meta.callback();
+
+                break;
+            default:
+                if (meta.counter > 0) {
+                    meta.counter--;
+                }
+
+                if (!readyForAction) {
+                    return;
+                }
+
+                meta.counter = 0;
+
+                meta.callback();
+
+                break;
             }
-
-            if (!readyForAction) {
-                return;
-            }
-
-            meta.counter = 0;
-
-            meta.callback();
         });
 
         if (this.config.debug) {

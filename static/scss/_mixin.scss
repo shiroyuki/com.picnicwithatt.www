@@ -7,3 +7,11 @@ $defatulAnimationSpeed: 500ms;
     -o-transition: $property ease $speed;
     transition: $property ease $speed;
 }
+
+@mixin transform($execution) {
+    -webkit-transform: $execution;
+    -moz-transform: $execution;
+    -ms-transform: $execution;
+    -o-transform: $execution;
+    transform: $execution;
+}

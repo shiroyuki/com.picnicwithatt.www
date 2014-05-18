@@ -8,36 +8,31 @@
     <script src="{{ url_for('static', filename='jquery.js') }}"></script>
 </head>
 <body class="parallaxer">
-    <article data-key="home">
-        <h1>Picnic with Att</h1>
+    <article data-key="home" data-title="General Information">
+        <h1 class="sr-only">Picnic with Att</h1>
+        <div class="brand"><img src="{{ url_for('static', filename='image/badge-256px.png') }}" title="Picnic with Att"/></div>
+        <div class="when">2014.12.29</div>
+        <div class="countdown"></div>
     </article>
-    <article class="card-section" data-key="engagement-ceremony">
-        <div class="card">
-            <h1>Engagement Ceremony</h1>
-        </div>
+    <article data-key="engagement-ceremony" data-title="Engagement Ceremony">
+        <h2>Engagement Ceremony</h2>
     </article>
-    <article class="card-section" data-key="wedding-ceremony">
-        <div class="card">
-            <h1>Wedding Ceremony</h1>
-        </div>
+    <article data-key="wedding-ceremony" data-title="Wedding Ceremony">
+        <h2>Wedding Ceremony</h2>
     </article>
-    <article class="card-section" data-key="wedding-party/afternoon">
-        <div class="card">
-            <h1>Wedding Party (Afternoon Session)</h1>
-        </div>
+    <article data-key="wedding-party/afternoon" data-title="Wedding Party (Afternoon Session)">
+        <h2>Wedding Party (Afternoon Session)</h2>
     </article>
-    <article class="card-section" data-key="wedding-party/night">
-        <div class="card">
-            <h1>Wedding Party (Night Session)</h1>
-        </div>
+    <article data-key="wedding-party/night" data-title="Wedding Party (Night Session)">
+        <h2>Wedding Party (Night Session)</h2>
     </article>
-    <article class="card-section" data-key="credits">
-        <div class="card">
-            <h1>Credits</h1>
-        </div>
+    <article data-key="credits" data-title="Credits">
+        <h2>Credits</h2>
     </article>
     <script src="{{ url_for('static', filename='js/shiroyuki/AnimationControl.js') }}"></script>
     <script src="{{ url_for('static', filename='js/shiroyuki/Parallaxer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/shiroyuki/Countdown.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/section/HomeSection.js') }}"></script>
     <script src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
 </html>

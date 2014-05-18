@@ -1,0 +1,50 @@
+[data-key="home"] {
+    .brand {
+        @include transform(rotate(15deg));
+
+        position: absolute;
+        right: 30px;
+        top: 30px;
+
+        img {
+            display: block;
+        }
+    }
+
+    .when {
+        position: absolute;
+        right: 50%;
+        bottom: 50%;
+        font-size: 96px;
+        font-weight: 700;
+        text-align: right;
+        padding: 7px 20px;
+        background-color: #ffcc00;
+    }
+
+    .countdown {
+        position: absolute;
+        right: 50%;
+        top: 50%;
+        font-size: 36px;
+        font-weight: 700;
+        color: #999;
+        text-align: right;
+        text-transform: uppercase;
+        padding: 7px 20px;
+        background-color: #000;
+
+        span {
+            color: #fff;
+        }
+
+        &[data-variation="end"] {
+            font-size: 24px;
+            background-color: #fff;
+        }
+
+        &[data-variation="now"] {
+            font-size: 24px;
+        }
+    }
+}
