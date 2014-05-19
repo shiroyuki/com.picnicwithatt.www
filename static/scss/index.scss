@@ -1,7 +1,9 @@
 @import '_mixin';
 @import '_section_home';
+@import '_section_engagement_ceremony';
 
 body {
+    @include disable_selection();
     font-family: 'Helvetica Neue', 'Roboto', 'Arial', sans-serif;
     font-weight: 300;
     font-size: 16px;
@@ -17,12 +19,203 @@ body {
     display: none;
 }
 
+.label {
+    display: inline-block;
+    padding: 0 8px;
+    border-radius: 4px;
+    background-color: #9933CC;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+nav {
+    .menu-activator {
+        z-index: 12;
+        position: fixed;
+        right: 30px;
+        bottom: 30px;
+        display: block;
+        padding: 8px 15px;
+        background-color: #0099CC;
+        color: #fff;
+        cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.5) 0 0 5px;
+    }
+
+    .menu-deactivator {
+        z-index: 12;
+        position: fixed;
+        right: 30px;
+        top: 30px;
+        display: none;
+        padding: 8px 14px;
+        background-color: #CC0000;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    ul {
+        z-index: 11;
+        position: fixed;
+        right: 0;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        display: none;
+        margin: 0;
+        padding: 70px 0 0 0;
+        background-color: rgba(0, 0, 0, 0.8);
+
+        li a {
+            display: block;
+            padding: 8px 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 48px;
+            font-weight: 100;
+            letter-spacing: 1px;
+
+            &:hover {
+                background-color: #FF8800;
+            }
+        }
+    }
+
+    &.active {
+        .menu-activator {
+            display: none;
+        }
+
+        .menu-deactivator {
+            display: block;
+        }
+
+        ul {
+            display: block;
+        }
+    }
+}
+
+.brand {
+    @include transform(rotate(15deg));
+    @include transition(all, $defatulAnimationSpeed);
+
+    z-index: 10;
+    position: fixed;
+    right: 30px;
+    top: 30px;
+
+    img {
+        display: block;
+    }
+}
+
 .parallaxer .section {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
+
+    section {
+        @include transition(all, $defatulAnimationSpeed);
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #fff;
+        padding: 40px;
+        font-size: 24px;
+
+        h2 {
+            text-transform: uppercase;
+
+            span {
+                color: #669900;
+            }
+        }
+
+        &.left {
+            right: 66%;
+        }
+
+        &.right {
+            left: 66%;
+        }
+    }
 }
 
-[data-key="engagement-ceremony"] {
-    background-image: url('/static/image/DSC_2260.jpg');
+[data-key="wedding-ceremony"] {
+    background-image: url('/static/image/IMG_2877.jpg');
+}
+
+[data-key="wedding-party/afternoon"] {
+    background-image: url('/static/image/DSCF3540.jpg');
+}
+
+[data-key="wedding-party/evening"] {
+    background-image: url('/static/image/DSC_2324.jpg');
+}
+
+@media (max-width: 960px) {
+    .parallaxer .section {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+
+        section {
+            font-size: 20px;
+            padding-right: 190px;
+        }
+
+        section.left {
+            right: 170px;
+        }
+
+        section.right {
+            left: 170px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .brand {
+        top: 30px;
+        left: -40px;
+        right: 0;
+
+        img {
+            width: 240px;
+        }
+    }
+
+    nav {
+        .menu-activator {
+            top: 30px;
+            right: 0;
+            bottom: auto;
+        }
+
+        .menu-deactivator {
+            right: 0;
+        }
+
+        ul li a {
+            font-size: 24px;
+        }
+    }
+
+    .parallaxer .section {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+
+        section, section.left, section.right {
+            font-size: 14px;
+            top: 50%;
+            left: 0;
+            right: 0;
+            padding: 20px;
+        }
+    }
 }

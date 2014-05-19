@@ -22,6 +22,8 @@ var Parallaxer = function ($selector, config) {
     this.$bookmark       = null;
     this.$naviAid        = null;
     this.$currentSection = null;
+    this.initialKey      = this.getKeyFromHash();
+    this.hashNaviEnabled = true;
     this.numberOfSectors = $selector.length;
     this.animationControl = this.config.animationControl;
     this.totalScrollingDistance = 0;
@@ -59,6 +61,14 @@ $.extend(Parallaxer.prototype, {
         this.manageSectionVisibility();
     },
 
+    onHashNavigate: function (event) {
+        if (!this.hashNaviEnabled) {
+            return;
+        }
+
+        this.navigateByKey(this.getKeyFromHash());
+    },
+
     onGoToNavigate: function (event) {
         var key = String($(event.currentTarget).attr('href')).substring(1);
 
@@ -68,7 +78,7 @@ $.extend(Parallaxer.prototype, {
     },
 
     activate: function () {
-        var i = this.numberOfSectors
+        var i = this.numberOfSectors,
             self = this
         ;
 
@@ -84,10 +94,9 @@ $.extend(Parallaxer.prototype, {
             self.keyToIndexMap[$section.attr('data-key')] = index;
 
             $section.addClass('section');
+            $section.css('z-index', i--);
 
-            if (index > 0) {
-                self.setSectionPosition($section, 'bottom');
-            }
+            self.setSectionPosition($section, 'bottom');
 
             if (self.config.showPrev && index > 0) {
                 $section.append('<a class="go-to prev" href="#' + $section.prev().attr('data-key') + '">' + $section.prev().attr('data-title') + '</a>');
@@ -103,6 +112,8 @@ $.extend(Parallaxer.prototype, {
         this.$window.on('resize', $.proxy(this.onResize, this));
         this.$window.on('scroll', $.proxy(this.onScroll, this));
         this.$window.on('touchmove', $.proxy(this.onScroll, this));
+        this.$window.on('touchstart', $.proxy(this.showNaviAid, this));
+        this.$window.on('touchstop', $.proxy(this.hideNaviAid, this));
         this.$window.on('hashchange', $.proxy(this.onHashNavigate, this));
 
         this.$sections
@@ -156,6 +167,13 @@ $.extend(Parallaxer.prototype, {
             sectionIndex    = Math.floor(currentPosition / this.scrollingLengthPerSection)
         ;
 
+        if (this.initialKey) {
+            sectionIndex    = this.keyToIndexMap[this.initialKey];
+            this.initialKey = null;
+
+            return sectionIndex;
+        }
+
         if (sectionIndex < 0) {
             return 0;
         }
@@ -176,6 +194,8 @@ $.extend(Parallaxer.prototype, {
             sectionIndex = this.getSectionIndex()
         ;
 
+        this.hashNaviEnabled = false;
+
         this.$sections.each(function (index) {
             var position = null,
                 $section = $(this);
@@ -190,6 +210,11 @@ $.extend(Parallaxer.prototype, {
             default:
                 self.$currentSection = $section;
                 window.location.hash = $section.attr('data-key');
+
+                if ($section.attr('data-key') == 'home') {
+                    //throw 'panda';
+                }
+
                 position = 'current';
             }
 
@@ -197,6 +222,18 @@ $.extend(Parallaxer.prototype, {
         });
 
         this.hideNaviAid();
+
+        this.hashNaviEnabled = true;
+    },
+
+    getKeyFromHash: function () {
+        var key = String(window.location.hash);
+
+        if (key.length <= 1) {
+            return null;
+        }
+
+        return key.substring(1);
     },
 
     adjustContainer: function () {

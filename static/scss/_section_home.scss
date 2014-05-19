@@ -1,16 +1,4 @@
 [data-key="home"] {
-    .brand {
-        @include transform(rotate(15deg));
-
-        position: absolute;
-        right: 30px;
-        top: 30px;
-
-        img {
-            display: block;
-        }
-    }
-
     .when {
         position: absolute;
         right: 50%;
@@ -45,6 +33,46 @@
 
         &[data-variation="now"] {
             font-size: 24px;
+        }
+    }
+}
+
+@media (max-width: 960px) {
+    [data-key="home"] {
+        .when {
+            font-size: 48px;
+            left: 0;
+            right: auto;
+            text-align: left;
+        }
+
+        .countdown {
+            font-size: 24px;
+            left: 0;
+            right: auto;
+            text-align: left;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    [data-key="home"] {
+        .when {
+            font-size: 48px;
+            top: auto;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            text-align: left;
+        }
+
+        .countdown {
+            font-size: 24px;
+            top: auto;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: left;
         }
     }
 }

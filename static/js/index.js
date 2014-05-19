@@ -1,5 +1,7 @@
 $(document).ready(function () {
     var $sections = $('body > article'),
+        $menu     = $('body > nav'),
+        $menuList = $menu.children('ul'),
         animationControl = new AnimationControl({
             debug: false,
             delay: 20,
@@ -17,7 +19,8 @@ $(document).ready(function () {
             'home': HomeSection
         },
         TemporarySectionClass,
-        temporaryConfig
+        temporaryConfig,
+        $temporaryContainer
     ;
 
     animationControl.activate();
@@ -25,14 +28,32 @@ $(document).ready(function () {
 
     for (namespace in enabledSectionMap) {
         TemporarySectionClass = enabledSectionMap[namespace];
+        $temporaryContainer   = $sections.filter('[data-key="' + namespace + '"]');
 
         temporaryConfig = {
             namespace:        namespace,
-            container:        $sections.filter('[data-key="' + namespace + '"]'),
+            container:        $temporaryContainer,
             animationControl: animationControl,
-            dueTimestamp:     new Date('2014-12-29 7:00 GMT+0700')
+            dueTimestamp:     new Date('2014/12/29 7:00 GMT+0700')
         };
 
         activeSectionMap[namespace] = new TemporarySectionClass(temporaryConfig);
     }
+
+    $sections.each(function (i) {
+        var $section = $(this);
+        $menuList.append('<li><a href="#' + $section.attr('data-key') + '">' + $section.attr('data-title') + '</a></li>');
+    });
+
+    $menu.on('click', '.menu-activator', function (event) {
+        $menu.addClass('active');
+    });
+
+    $menu.on('click', '.menu-deactivator', function (event) {
+        $menu.removeClass('active');
+    });
+
+    $menu.on('click', 'ul a', function (event) {
+        $menu.removeClass('active');
+    });
 });

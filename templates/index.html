@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0, user-scalable = no"/>
     <title>Picnic with Att</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/parallaxer.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
@@ -9,26 +10,66 @@
 
 </head>
 <body class="parallaxer">
+    <div class="brand"><img src="{{ url_for('static', filename='image/badge-300px.png') }}" title="Picnic with Att"/></div>
+    <nav>
+        <a class="menu-activator">Menu</a>
+        <a class="menu-deactivator">&times;</a>
+        <ul></ul>
+    </nav>
     <article data-key="home" data-title="General Information">
         <h1 class="sr-only">Picnic with Att</h1>
-        <div class="brand"><img src="{{ url_for('static', filename='image/badge-256px.png') }}" title="Picnic with Att"/></div>
         <div class="when">2014.12.29</div>
         <div class="countdown"></div>
     </article>
     <article data-key="engagement-ceremony" data-title="Engagement Ceremony">
-        <h2>Engagement Ceremony</h2>
+        <section class="left">
+            <h2>Engagement Ceremony</h2>
+            <p class="when">
+                Around <time datetime="2014-12-29 7:00 GMT+0700">7:00</time> <span class="label">unconfirmed</span>
+            </p>
+        </section>
     </article>
     <article data-key="wedding-ceremony" data-title="Wedding Ceremony">
-        <h2>Wedding Ceremony</h2>
+        <section class="left">
+            <h2>Wedding Ceremony</h2>
+            <p class="when">
+                Around <time datetime="2014-12-29 12:00 GMT+0700">12:00</time> <span class="label">unconfirmed</span>
+            </p>
+        </section>
     </article>
     <article data-key="wedding-party/afternoon" data-title="Wedding Party (Afternoon Session)">
-        <h2>Wedding Party (Afternoon Session)</h2>
+        <section class="left">
+            <h2>Wedding Party <span>Afternoon Session</span></h2>
+            <p class="when">
+                TBD
+            </p>
+            <p>
+                This session is designed for elders. Younglings should look forward to the evening session.
+            </p>
+        </section>
     </article>
-    <article data-key="wedding-party/night" data-title="Wedding Party (Night Session)">
-        <h2>Wedding Party (Night Session)</h2>
+    <article data-key="wedding-party/evening" data-title="Wedding Party (Evening Session)">
+        <section class="left">
+            <h2>Wedding Party <span>Evening Session</span></h2>
+            <p class="when">
+                TBD
+            </p>
+            <p>
+                This session is designed for young people and someone with youth at heart.
+            </p>
+        </section>
     </article>
-    <article data-key="credits" data-title="Credits">
-        <h2>Credits</h2>
+    <article data-key="aside-notes" data-title="Aside Notes">
+        <section class="left">
+            <h2>Aside Notes</h2>
+            <p>
+                This website is made with love on Mac by <a href="http://shiroyuki.com" target="_blank">Juti</a> and
+                built for very modern browsers, including Safari for iOS 7.
+            </p>
+            <p>
+                All photographers used on this website is copyrighted by Juti, Atthapol and Picnic(?).
+            </p>
+        </section>
     </article>
     <script src="{{ url_for('static', filename='js/shiroyuki/AnimationControl.js') }}"></script>
     <script src="{{ url_for('static', filename='js/shiroyuki/Parallaxer.js') }}"></script>
